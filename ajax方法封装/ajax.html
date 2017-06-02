@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			
+			body{padding:50px;
+			font:14px,helvetica;}
+			ul{
+				padding:0;
+			}
+			ul li{
+				list-style: none;
+				background:#cc6767;
+				margin-bottom:10px;
+				padding:10px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>jQuery Ajax</h1>
+		<h2>Coffee Orders</h2>
+		<ul id="orders">
+			<li>Name:Jhon,Drink:Coffee</li>
+			<li>Name:Jhon,Drink:Coffee</li>
+		</ul>
+		<h4>添加新的点餐列表</h4>
+		<p>name: <input type="text" id="name"></p>
+		<p>drink: <input type="text" id="drink"></p>
+		<button id="add-order">Add</button>
+		
+		<script type="text/javascript" src="js/jquery-1.11.0.js" ></script>
+		<script>
+			$(function(){
+				//拿到ul对象
+				var $orders=$("#orders");
+				$.ajax({
+					//请求类型
+					type:"GET",
+					//从哪里请求
+					url:"http://rest.learncode.academy/api/learncode/friends",
+					success:function(data){
+//						console.log(data);
+					//i为下标   order:所有对象
+					//遍历所有对象
+						$.each(data,function(i,order){
+							addOrder(order);
+						});
+					},
+
+				});
+
+//          http://rest.learncode.academy/api/learncode/friends
+			//添加按钮点击事件
+			$("#add-order").on("click",function(){
+				var order={
+					name:$("#name").val(),
+					drink:$("#drink").val()
+				};
+				//通过ajax传输数据
+				$.ajax({
+					type:"POST",
+					url:'http://rest.learncode.academy/api/learncode/friends',
+					data:order,
+					success:function(newOrder){
+						addOrder(newOrder);
+					},
+					error:function(){
+						alert("error....");
+					}
+				})
+			})
+			//封装
+			function addOrder(order){
+				$orders.append('<li>Name: '+order.name+'Drink: '+order.drink+'</li>');
+			}
+			
+			})
+		</script>
+	</body>
+</html>
