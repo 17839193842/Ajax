@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{padding:0px;margin: 0px;}
+			#box{
+				width:300px;
+				height:400px;
+				margin:20px auto;
+				background:palegreen;
+			}
+			h3{
+				text-align:center;
+				color:red;
+				padding:10px;
+			}
+			label{width:240px;height:40px;
+			  line-height:40px;margin:10px auto;display:block;}
+			label input{
+				width:160px;height:30px;
+				line-height:30px;
+			}
+			#box p{
+				color:orange;
+				padding-left:30px;
+			}
+		</style>
+	</head>
+	<body>
+		<form id="box">
+			<h3>用户注册页面</h3>
+			<label for="name">用户名:
+				<input type="text" name="name" id="username">
+			</label>
+			<p id="txt"></p>
+			<label for="password">
+				密&nbsp;码:
+				<input type="text" id="password" name="password">
+			</label>
+		</form>
+		<script type="text/javascript">
+			function username(str,successCall,errorCall){
+	var xmlHttp;
+//处理兼容
+if(window.XMLHttpRequest){
+	xmlHttp=new XMLHttpRequest();
+   }
+	else{
+	xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+   }
+	//配置信息
+   xmlHttp.open("GET","username.php?name="+str,true);
+	//发送
+	xmlHttp.send(null);
+	//监听状态
+	xmlHttp.onreadystatechange=function(){
+		if(xmlHttp.readyState==4){
+		  if(xmlHttp.status=200){
+			if(successCall){
+				successCall(xmlHttp.responseText);
+			}	
+		 }
+		}
+		
+	else{
+		if(errorCall){
+			errorCall(xmlHttp.status);
+		}	
+	  }
+  }
+}
+var username1=document.getElementById("username");
+var txt=document.getElementById("txt");
+username1.onkeyup=function(){
+	username(this.value,successCall,errorCall);
+	function successCall(responseXML){
+		txt.innerHTML=responseXML;
+	}
+	function errorCall(statusText){
+		txt.innerHTML=statusText;
+	}
+}
+
+		</script>
+	</body>
+</html>
